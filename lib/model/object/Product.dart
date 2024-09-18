@@ -10,6 +10,7 @@ class Product {
   String description;
   String imagePath;
   int stock_quantity;
+
   double price;
   Categoria category;
   Brand brand;
@@ -27,6 +28,16 @@ class Product {
       required this.category,
         required this.brand,
         required this.listOrder});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Product &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          category == other.category &&
+          brand == other.brand;
+
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -95,4 +106,6 @@ class Product {
   int getSize() {
     return size;
   }
+
+
 }

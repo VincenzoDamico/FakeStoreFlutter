@@ -3,7 +3,7 @@ import 'package:store/UI/widget/ProductCard.dart';
 
 import '../../model/Model.dart';
 import '../../model/object/Product.dart';
-import '../../model/support/constant.dart';
+import '../../model/support/MyConstant.dart';
 
 class MyDesktopBody extends StatefulWidget {
   const MyDesktopBody({Key? key}) : super(key: key);

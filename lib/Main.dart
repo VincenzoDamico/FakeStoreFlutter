@@ -216,7 +216,9 @@ class _MyHomePageState extends State<MyHomePage> {
 }*/
 
 import 'package:flutter/material.dart';
-import 'homepage.dart';
+import 'package:provider/provider.dart';
+import 'Homepage.dart';
+import 'Provider/CartProvider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -227,10 +229,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+              create: (_) => CartProvider()
+          )
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: HomePage(),
+          theme: ThemeData(primarySwatch: Colors.deepPurple),
+        ));
   }
 }

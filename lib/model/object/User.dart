@@ -3,14 +3,14 @@ class User {
   String name;
   String surname;
   String email;
-  String phone;
-  String address;
-  String city;
-  String cap;
+  String? phone;
+  String? address;
+  String? city;
+  String? cap;
 
 
-  User({this.id,  required this.name, required this.surname,
-    required this.email,required this.phone,required this.address,required this.city,required this.cap});
+  User({this.id, required this.name,  required this.surname,
+    required this.email, this.phone, this.address, this.city, this.cap});
 
 
   factory User.fromJson(Map<String, dynamic> json) {

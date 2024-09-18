@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../Provider/CartProvider.dart';
+import '../../model/object/Order_item.dart';
 import '../../model/object/Product.dart';
 import '../Aspect/ProductStyle.dart';
 import '../../model/support/Images.dart';
-import '../../model/support/constant.dart';
+import 'package:store/model/support/MyConstant.dart';
 
 
 class ProductCard extends StatelessWidget {
@@ -22,22 +25,22 @@ class ProductCard extends StatelessWidget {
           padding: const EdgeInsets.all(1),
           decoration: BoxDecoration(
               boxShadow: [ProductStyle.productShodow],
-              borderRadius: BorderRadius.circular(Constants.bAm),
+              borderRadius: BorderRadius.circular(MyConstant.bAm),
               color: Colors.white
           ),
           child: Column(
             children: [
             Container(
-            padding: const EdgeInsets.all(Constants.pmd),
-            height: Constants.himg,
+            padding: const EdgeInsets.all(MyConstant.pmd),
+            height: MyConstant.himg,
             decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(Constants.bAm),
+                borderRadius: BorderRadius.circular(MyConstant.bAm),
                 border: Border.all(color: Colors.white)
               ),
             child: Image.asset(Images.myMap[prod.getImagePath()]!, fit: BoxFit.scaleDown),
             ),
-          Padding(padding: const EdgeInsets.all(Constants.pmd),
+          Padding(padding: const EdgeInsets.all(MyConstant.pmd),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -60,7 +63,7 @@ class ProductCard extends StatelessWidget {
                 maxLines: 2,
                 textAlign: TextAlign.left,
               ),
-              const SizedBox(height: Constants.pmd),
+              const SizedBox(height: MyConstant.pmd),
               Text(
                 '\€'+prod.getPrice().toString(),
                 maxLines: 1,
@@ -68,7 +71,11 @@ class ProductCard extends StatelessWidget {
                 textAlign: TextAlign.left,
                 style: Theme.of(context).textTheme.headlineMedium,
 
-              )
+              ),
+              ElevatedButton(onPressed: (){
+                   context.read<CartProvider>().addItem( newItem: new Order_item(prodotto: prod, quantity: 1));
+                   FocusManager.instance.primaryFocus?.unfocus();
+              }, child: const Text("Copra"))
             ],
           ))
 

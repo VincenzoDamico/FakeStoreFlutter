@@ -1,4 +1,4 @@
-class Constants {
+class MyConstant {
   static final mobileWidth = 950;
 
 //padding

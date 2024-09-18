@@ -7,8 +7,9 @@ import '../../model/object/Categoria.dart';
 
 import '../../model/Model.dart';
 import '../../model/object/Product.dart';
-import '../../model/support/constant.dart';
 import '../widget/ProductCard.dart';
+import '../../model/support/MyConstant.dart';
+
 
 class catScarpe extends StatefulWidget {
   String categoria;
@@ -33,14 +34,14 @@ class _catScarpeState extends State<catScarpe> {
     return Scaffold(
       backgroundColor: Colors.deepPurple[200],
       body: Padding(
-          padding: const EdgeInsets.all(Constants.pmd),
+          padding: const EdgeInsets.all(MyConstant.pmd),
           child: Row(
             children: [
               // second column
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  width: Constants.wfmax,
+                  width: MyConstant.wfmax,
                   color: Colors.deepPurple[300],
                 ),
               ),
@@ -66,7 +67,7 @@ class _catScarpeState extends State<catScarpe> {
                             (BuildContext context, int index) {
                           return Padding(
                               padding: const EdgeInsets.all(
-                                  Constants.pmd),
+                                  MyConstant.pmd),
                               child: ProductCard(
                                   prod: _products![index]));
                         },
@@ -74,10 +75,10 @@ class _catScarpeState extends State<catScarpe> {
                         gridDelegate:
                         SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: (screenSize.width -
-                                Constants.wfmax) ~/
-                                Constants.wmax,
-                            childAspectRatio: Constants.wmax /
-                                Constants.hmax),
+                                MyConstant.wfmax) ~/
+                                MyConstant.wmax,
+                            childAspectRatio: MyConstant.wmax /
+                                MyConstant.hmax),
                       )
                           : CircularProgressIndicator(),
                     )

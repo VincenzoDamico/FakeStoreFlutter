@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:store/model/support/constant.dart';
+import 'package:store/model/support/MyConstant.dart';
 
 import 'menager/RestManager.dart';
 import 'object/Product.dart';
@@ -88,8 +88,8 @@ class Model {
   }*/
   Future<List<Product>> getAllProduct() async {
       List<dynamic> ObjsJson= jsonDecode(await _restManager.makeGetRequest(
-          Constants.ADDRESS_STORE_SERVER,
-          Constants.REQUEST_ALL_PRODUCTS)) as List;
+          MyConstant.ADDRESS_STORE_SERVER,
+          MyConstant.REQUEST_ALL_PRODUCTS)) as List;
       print(ObjsJson);
       List<Product> pObjs = ObjsJson.map((pObjs) => Product.fromJson(pObjs)).toList();
       if (pObjs==null){
@@ -102,8 +102,8 @@ class Model {
     Map<String, String> params = Map();
     params["category"] = c;
     List<dynamic> ObjsJson= jsonDecode(await _restManager.makeGetRequest(
-        Constants.ADDRESS_STORE_SERVER,
-        Constants.REQUEST_CATEGORY_PRODUCTS,params)) as List;
+        MyConstant.ADDRESS_STORE_SERVER,
+        MyConstant.REQUEST_CATEGORY_PRODUCTS,params)) as List;
     print(ObjsJson);
     List<Product> pObjs = ObjsJson.map((data) => Product.fromJson(data)).toList();
 

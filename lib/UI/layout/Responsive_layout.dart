@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:store/model/support/constant.dart';
+import 'package:store/model/support/MyConstant.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   final Widget mobileBody;
@@ -11,7 +11,7 @@ class ResponsiveLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth < Constants.mobileWidth) {
+        if (constraints.maxWidth < MyConstant.mobileWidth) {
           return mobileBody;
         } else {
           return desktop_body;

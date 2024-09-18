@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:store/model/support/ErrorListener.dart';
-import 'package:store/model/support/constant.dart';
+import 'package:store/model/support/MyConstant.dart';
 
 
 enum TypeHeader {
@@ -74,7 +74,7 @@ class RestManager {
         return response.body;
       } catch(err) {
         if ( delegate != null && !errorOccurred ) {
-          delegate!.errorNetworkOccurred(Constants.MESSAGE_CONNECTION_ERROR);
+          delegate!.errorNetworkOccurred(MyConstant.MESSAGE_CONNECTION_ERROR);
           errorOccurred = true;
         }
         await Future.delayed(const Duration(seconds: 5), () => null); // not the best solution
