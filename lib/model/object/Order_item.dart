@@ -17,6 +17,13 @@ class Order_item {
     this.order_bucket,
   }) : order_item_id = _generateId();  // Genera un nuovo ID automaticamente
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Order_item &&
+              runtimeType == other.runtimeType &&
+              prodotto == other.prodotto;
+
   // Genera un nuovo ID incrementale
   static int _generateId() {
     _currentId++;

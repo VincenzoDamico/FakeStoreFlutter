@@ -35,8 +35,8 @@ class Product {
       other is Product &&
           runtimeType == other.runtimeType &&
           name == other.name &&
-          category == other.category &&
-          brand == other.brand;
+          category.name == other.category.name &&
+          brand.name == other.brand.name;
 
 
   factory Product.fromJson(Map<String, dynamic> json) {

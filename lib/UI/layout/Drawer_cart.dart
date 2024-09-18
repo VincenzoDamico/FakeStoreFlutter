@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:store/Provider/CartProvider.dart';
 
 import '../../model/support/Images.dart';
@@ -9,10 +10,8 @@ class Drawer_Cart extends StatelessWidget {
     final provider = CartProvider.of(context);
     final finalList = provider.orderItems;
     return Drawer(
-      backgroundColor: Color(0xFAD3D3D7),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
+        backgroundColor: Color(0xFAD3D3D7),
+        child: ListView(padding: EdgeInsets.zero, children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.deepPurpleAccent,
@@ -20,11 +19,40 @@ class Drawer_Cart extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.shopping_cart,
-                  color: Colors.white,
-                  size: 80.0, // You can adjust the size as needed
-                ),
+                Row(
+                  children: [
+                    ElevatedButton(
+                        child: const Text(
+                          "Pagemento",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.deepPurple),
+                        ),
+                        onPressed: () {}),
+                    Spacer(),
+
+                    FutureBuilder<double>(
+                      future: provider.getTotalPrice(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Errore: ${snapshot.error}');
+                        } else {
+                          return Text(
+                            '\$${snapshot.data?.toStringAsFixed(2) ?? '0.00'}',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.white),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -90,21 +118,35 @@ class Drawer_Cart extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
+                        Spacer(),
+                        Expanded(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                              FloatingActionButton(
+                                  child: const Icon(Icons.add),
+                                  onPressed: () {
+                                    context
+                                        .read<CartProvider>()
+                                        .addItem(newItem: cartItems);
+                                  }),
+                              const SizedBox(height: 10),
                               Text(
-                                "\$${cartItems.quantity}",
+                                "${cartItems.quantity}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                                  fontSize: 20,
                                 ),
                               ),
-                              IconButton(onPressed: onPressed, icon: ),
-                              IconButton(onPressed: onPressed, icon: icon),
-
-                            ]
-                        )
+                              const SizedBox(height: 10),
+                              FloatingActionButton(
+                                  child: const Icon(Icons.remove),
+                                  onPressed: () {
+                                    context
+                                        .read<CartProvider>()
+                                        .removeItem(item: cartItems);
+                                  }),
+                            ]))
                       ],
                     ),
                   ),
@@ -112,8 +154,6 @@ class Drawer_Cart extends StatelessWidget {
               ]);
             },
           ),
-        ],
-      ),
-    );
+        ]));
   }
 }

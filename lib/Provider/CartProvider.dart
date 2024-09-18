@@ -27,8 +27,12 @@ class CartProvider extends ChangeNotifier{
 
   // Metodo per rimuovere un prodotto dal carrello
   void removeItem({ required Order_item item}) async{
-    _orderItems.remove(item);
-    notifyListeners();  // Notifica ai consumatori che lo stato è cambiato
+    if(_orderItems.contains(item)) {
+      item.removeQuantity();
+      if(item.quantity==0)
+        _orderItems.remove(item);
+      notifyListeners();
+    }// Notifica ai consumatori che lo stato è cambiato
   }
   void clear(){
     _orderItems.clear();
