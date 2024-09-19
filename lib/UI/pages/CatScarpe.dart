@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../model/object/Categoria.dart';
 
@@ -9,7 +8,7 @@ import '../../model/Model.dart';
 import '../../model/object/Product.dart';
 import '../widget/ProductCard.dart';
 import '../../model/support/MyConstant.dart';
-
+import '../widget/FilterApp.dart';
 
 class catScarpe extends StatefulWidget {
   String categoria;
@@ -28,7 +27,6 @@ class _catScarpeState extends State<catScarpe> {
 
   @override
   Widget build(BuildContext context) {
-
     _search();
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
@@ -42,7 +40,11 @@ class _catScarpeState extends State<catScarpe> {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 width: MyConstant.wfmax,
-                color: Colors.deepPurple[300],
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple[300],
+                  borderRadius: BorderRadius.circular(MyConstant.bAm),
+                ),
+                child: FilterApp(),
               ),
             ),
             // First column
@@ -55,32 +57,32 @@ class _catScarpeState extends State<catScarpe> {
                   Expanded(
                     child: !_searching
                         ? _products == null
-                        ? SizedBox.shrink()
-                        : _products!.length == 0
-                        ? noResults()
-                        : GridView.builder(
-                      shrinkWrap: true,
-                      // Create a grid with 2 columns. If you change the scrollDirection to
-                      // horizontal, this produces 2 rows.
-                      itemCount: _products!.length,
-                      // Generate 100 widgets that display their index in the List.
-                      itemBuilder:
-                          (BuildContext context, int index) {
-                        return Padding(
-                            padding: const EdgeInsets.all(
-                                MyConstant.pmd),
-                            child: ProductCard(
-                                prod: _products![index]));
-                      },
+                            ? SizedBox.shrink()
+                            : _products!.length == 0
+                                ? noResults()
+                                : GridView.builder(
+                                    shrinkWrap: true,
+                                    // Create a grid with 2 columns. If you change the scrollDirection to
+                                    // horizontal, this produces 2 rows.
+                                    itemCount: _products!.length,
+                                    // Generate 100 widgets that display their index in the List.
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Padding(
+                                          padding: const EdgeInsets.all(
+                                              MyConstant.pmd),
+                                          child: ProductCard(
+                                              prod: _products![index]));
+                                    },
 
-                      gridDelegate:
-                      SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: (screenSize.width -
-                              MyConstant.wfmax) ~/
-                              MyConstant.wmax,
-                          childAspectRatio: MyConstant.wmax /
-                              MyConstant.hmax),
-                    )
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: (screenSize.width -
+                                                    MyConstant.wfmax) ~/
+                                                MyConstant.wmax,
+                                            childAspectRatio: MyConstant.wmax /
+                                                MyConstant.hmax),
+                                  )
                         : CircularProgressIndicator(),
                   )
                 ],
@@ -91,13 +93,18 @@ class _catScarpeState extends State<catScarpe> {
       ),
     );
   }
+
   Widget noResults() {
     return Text("no_results !");
   }
+
   void _search() {
-    if (_searching==true) {
+    if (_searching == true) {
       // Model.sharedInstance.getAllProduct()!.then((product) {
-      Model.sharedInstance.getProductCategory(jsonEncode(Categoria(name:categoria, description:"")))!.then((product) {
+      Model.sharedInstance
+          .getProductCategory(
+              jsonEncode(Categoria(name: categoria, description: "")))!
+          .then((product) {
         setState(() {
           _searching = false;
           _products = product;
