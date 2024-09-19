@@ -22,7 +22,7 @@ class MyConstant {
   static final hmax = 450.0;
 
   //img
-  static final  himg = 300.0;
+  static final  himg = 250.0;
 
   // responses
   static final String RESPONSE_ERROR_MAIL_USER_ALREADY_EXISTS = "ERROR_MAIL_USER_ALREADY_EXISTS";

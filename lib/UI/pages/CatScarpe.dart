@@ -34,60 +34,61 @@ class _catScarpeState extends State<catScarpe> {
     return Scaffold(
       backgroundColor: Colors.deepPurple[200],
       body: Padding(
-          padding: const EdgeInsets.all(MyConstant.pmd),
-          child: Row(
-            children: [
-              // second column
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: MyConstant.wfmax,
-                  color: Colors.deepPurple[300],
-                ),
+        padding: const EdgeInsets.all(MyConstant.pmd),
+        child: Row(
+          children: [
+            // second column
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: MyConstant.wfmax,
+                color: Colors.deepPurple[300],
               ),
-              // First column
-              Expanded(
-                child: Column(
-                  children: [
-                    // youtube video
+            ),
+            // First column
+            Expanded(
+              child: Column(
+                children: [
+                  // youtube video
 
-                    // comment section & recommended videos
-                    Expanded(
-                      child: !_searching
-                          ? _products == null
-                          ? SizedBox.shrink()
-                          : _products!.length == 0
-                          ? noResults()
-                          : GridView.builder(
-                        // Create a grid with 2 columns. If you change the scrollDirection to
-                        // horizontal, this produces 2 rows.
-                        itemCount: _products!.length,
-                        // Generate 100 widgets that display their index in the List.
-                        itemBuilder:
-                            (BuildContext context, int index) {
-                          return Padding(
-                              padding: const EdgeInsets.all(
-                                  MyConstant.pmd),
-                              child: ProductCard(
-                                  prod: _products![index]));
-                        },
+                  // comment section & recommended videos
+                  Expanded(
+                    child: !_searching
+                        ? _products == null
+                        ? SizedBox.shrink()
+                        : _products!.length == 0
+                        ? noResults()
+                        : GridView.builder(
+                      shrinkWrap: true,
+                      // Create a grid with 2 columns. If you change the scrollDirection to
+                      // horizontal, this produces 2 rows.
+                      itemCount: _products!.length,
+                      // Generate 100 widgets that display their index in the List.
+                      itemBuilder:
+                          (BuildContext context, int index) {
+                        return Padding(
+                            padding: const EdgeInsets.all(
+                                MyConstant.pmd),
+                            child: ProductCard(
+                                prod: _products![index]));
+                      },
 
-                        gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: (screenSize.width -
-                                MyConstant.wfmax) ~/
-                                MyConstant.wmax,
-                            childAspectRatio: MyConstant.wmax /
-                                MyConstant.hmax),
-                      )
-                          : CircularProgressIndicator(),
+                      gridDelegate:
+                      SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: (screenSize.width -
+                              MyConstant.wfmax) ~/
+                              MyConstant.wmax,
+                          childAspectRatio: MyConstant.wmax /
+                              MyConstant.hmax),
                     )
-                  ],
-                ),
-              )
-            ],
-          ),
+                        : CircularProgressIndicator(),
+                  )
+                ],
+              ),
+            )
+          ],
         ),
+      ),
     );
   }
   Widget noResults() {
@@ -96,7 +97,7 @@ class _catScarpeState extends State<catScarpe> {
   void _search() {
     if (_searching==true) {
       // Model.sharedInstance.getAllProduct()!.then((product) {
-     Model.sharedInstance.getProductCategory(jsonEncode(Categoria(name:categoria, description:"")))!.then((product) {
+      Model.sharedInstance.getProductCategory(jsonEncode(Categoria(name:categoria, description:"")))!.then((product) {
         setState(() {
           _searching = false;
           _products = product;
