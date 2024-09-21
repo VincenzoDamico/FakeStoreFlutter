@@ -33,8 +33,11 @@ class MyConstant {
   static final String ADDRESS_STORE_SERVER = "localhost:9090";
 
 // requests
-  static final String REQUEST_ALL_PRODUCTS = "/productAll";
-  static final String REQUEST_CATEGORY_PRODUCTS= "/productCategory";
+  static final String REQUEST_ALL_PRODUCTS = "ApiProduct/productAll";
+  static final String REQUEST_CATEGORY_PRODUCTS= "ApiProduct/productCategory";
+  static final String REQUEST_CATEGORY_BRANDS= "/ApiBrand/brandCategory";
+  static final String REQUEST_PRODUCTS_CATEGORY_BRANDS= "ApiProduct/productCategoryBrand";
+
 
 
 }

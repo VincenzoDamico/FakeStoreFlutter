@@ -1,35 +1,45 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 
+import '../../model/Model.dart';
+import '../../model/object/Brand.dart';
+import '../../model/object/Categoria.dart';
 import '../../model/support/MyConstant.dart';
 
-/// Flutter code sample for [Radio].
-
-class FilterApp extends StatelessWidget {
-  const FilterApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Filter();
-  }
-}
 
 class Filter extends StatefulWidget {
-  const Filter({super.key});
+  String categoria;
+  final Function(Map<String, bool>) onApplyFilters; // Aggiungi un callback
+  Filter(this.categoria, {required this.onApplyFilters});
 
   @override
-  State<Filter> createState() => _FilterState();
+  _FilterState createState() => _FilterState(categoria);
 }
 
 class _FilterState extends State<Filter> {
-  Map<String, bool> _filterBrand = {
-    'isAvailable': false,
-    'isSelected': false,
-    'isEnabled': false,
-    'isVisible': false,
-  };
+  bool _searching = true;
+  String categoria;
+  Map<String, bool> _filterBrand=new Map();
+
+  _FilterState(this.categoria);
+
   @override
   Widget build(BuildContext context) {
+    _search();
     return Column(children: [
+      SizedBox(height: 20),
+      ElevatedButton(
+          child: const Text(
+            "Applica filtri",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                color: Colors.deepPurple),
+          ),
+          onPressed: () {
+            widget.onApplyFilters(_filterBrand); // Richiama il callback
+
+          }),
       SizedBox(height: 20),
       Container(
           width: MyConstant.wfmax-40,
@@ -39,14 +49,17 @@ class _FilterState extends State<Filter> {
             borderRadius: BorderRadius.circular(MyConstant.bAm),
           ),
           padding: const EdgeInsets.all(20),
-          child: Column(children: [
+          child:Column(children: [
             Text("Brand",
                 style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
                     color: Color(0xFF5E2A9B))),
             SizedBox(height: 10),
-            SingleChildScrollView(
+    !_searching
+    ?_filterBrand!.length == 0
+    ? noResults()
+        :SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Wrap(
                 spacing: 8.0, // Spazio tra i chip
@@ -69,14 +82,35 @@ class _FilterState extends State<Filter> {
                     checkmarkColor: Colors.deepPurple,
                     onSelected: (bool selected) {
                       setState(() {
-                        _filterBrand[key] = selected; // Aggiorna la mappa
+                        _filterBrand[key] = selected as bool; // Aggiorna la mappa
                       });
                     },
                   );
                 }).toList(),
               ),
-            )
+            ): CircularProgressIndicator()
           ]))
     ]);
+  }
+  Widget noResults() {
+    return Text("no_results !");
+  }
+
+  void _search() {
+    if (_searching == true) {
+      Model.sharedInstance
+          .getBrandCategory(
+          categoria)!
+          .then((brands) {
+        setState(() {
+          _searching = false;
+          _filterBrand.clear();
+          for (Brand b in brands){
+            _filterBrand.putIfAbsent(b.name, () => false);
+          }
+        });
+      });
+
+    }
   }
 }

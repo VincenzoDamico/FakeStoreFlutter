@@ -81,7 +81,7 @@ class ProductCard extends StatelessWidget {
                                       prodotto: prod, quantity: 1));
                               FocusManager.instance.primaryFocus?.unfocus();
                             },
-                            child: const Text("Copra")),
+                            child: const Text("Compra")),
                       ])
 
                     ],

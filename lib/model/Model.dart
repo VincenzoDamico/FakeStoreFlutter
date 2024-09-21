@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:store/model/object/Brand.dart';
 import 'package:store/model/support/MyConstant.dart';
 
 import 'menager/RestManager.dart';
@@ -99,8 +100,10 @@ class Model {
 
   }
   Future<List<Product>> getProductCategory(String c) async {
+    print(" \n richiestaProdCat \n");
+
     Map<String, String> params = Map();
-    params["category"] = c;
+    params["catname"] = c;
     List<dynamic> ObjsJson= jsonDecode(await _restManager.makeGetRequest(
         MyConstant.ADDRESS_STORE_SERVER,
         MyConstant.REQUEST_CATEGORY_PRODUCTS,params)) as List;
@@ -112,6 +115,43 @@ class Model {
     }
     return pObjs;
 
+  }
+  Future<List<Product>> getProductBrandCategory(String c, List<String> brands) async {
+    print("\n richiestaProdCatBrand \n");
+
+    Map<String, String> params = Map();
+    params["catname"] = c;
+    params["brands"] = brands.toString().replaceAll("[", "").replaceAll("]", "");;
+    List<dynamic> ObjsJson= jsonDecode(await _restManager.makeGetRequest(
+        MyConstant.ADDRESS_STORE_SERVER,
+        MyConstant.REQUEST_PRODUCTS_CATEGORY_BRANDS,params)) as List;
+    print(ObjsJson);
+    List<Product> bObjs = ObjsJson.map((data) => Product.fromJson(data)).toList();
+
+    if (bObjs==null){
+      print("errorooror");
+    }
+    return bObjs;
+  }
+
+
+
+
+  Future<List<Brand>> getBrandCategory(String c) async {
+    print(" \n richiestaBrandCat \n");
+
+    Map<String, String> params = Map();
+    params["category"] = c;
+    List<dynamic> ObjsJson= jsonDecode(await _restManager.makeGetRequest(
+        MyConstant.ADDRESS_STORE_SERVER,
+        MyConstant.REQUEST_CATEGORY_BRANDS,params)) as List;
+    print(ObjsJson);
+    List<Brand> bObjs = ObjsJson.map((data) => Brand.fromJson(data)).toList();
+
+    if (bObjs==null){
+      print("errorooror \n");
+    }
+    return bObjs;
   }
 
 /* Future<List<Product>?>? searchProduct(String name) async {

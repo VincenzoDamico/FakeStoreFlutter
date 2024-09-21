@@ -1,7 +1,9 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../model/object/Brand.dart';
 import '../../model/object/Categoria.dart';
 
 import '../../model/Model.dart';
@@ -44,7 +46,10 @@ class _catScarpeState extends State<catScarpe> {
                   color: Colors.deepPurple[300],
                   borderRadius: BorderRadius.circular(MyConstant.bAm),
                 ),
-                child: FilterApp(),
+                  child: Filter(
+                  categoria,
+                  onApplyFilters: _applyFilters, // Passa il callback
+                ),
               ),
             ),
             // First column
@@ -103,13 +108,43 @@ class _catScarpeState extends State<catScarpe> {
       // Model.sharedInstance.getAllProduct()!.then((product) {
       Model.sharedInstance
           .getProductCategory(
-              jsonEncode(Categoria(name: categoria, description: "")))!
+          categoria)!
           .then((product) {
         setState(() {
           _searching = false;
           _products = product;
         });
       });
+    }
+  }
+
+  void _applyFilters(Map<String, bool> selectedBrands) {
+    List<String> selectBrands=[];
+    for (String key in selectedBrands.keys ){
+      if(selectedBrands[key]!){
+        selectBrands.add(key);
+      }
+    }
+
+    if (selectBrands.isEmpty) {
+      Model.sharedInstance
+          .getProductCategory(
+          categoria)!
+          .then((product) {
+        setState(() {
+          _products = product;
+        });
+      });
+    } else {
+       Model.sharedInstance
+            .getProductBrandCategory(
+           categoria, selectBrands)!
+            .then((product) {
+          setState(() {
+            _products = product;
+          });
+        });
+
     }
   }
 }
