@@ -1,5 +1,5 @@
 class MyConstant {
-  static final mobileWidth = 950;
+  static final mobileWidth = 600;
 
 //padding
   static const pmd = 8.0;

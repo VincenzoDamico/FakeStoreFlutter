@@ -19,98 +19,107 @@ class Filter extends StatefulWidget {
 class _FilterState extends State<Filter> {
   bool _searching = true;
   String categoria;
-  Map<String, bool> _filterBrand=new Map();
+  Map<String, bool> _filterBrand = {};
 
   _FilterState(this.categoria);
 
   @override
+  void initState() {
+    super.initState();
+    _search(); // Spostato in initState per evitare chiamate multiple
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _search();
     return Column(children: [
       SizedBox(height: 20),
       ElevatedButton(
-          child: const Text(
-            "Applica filtri",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Colors.deepPurple),
-          ),
-          onPressed: () {
-            widget.onApplyFilters(_filterBrand); // Richiama il callback
-
-          }),
+        child: const Text(
+          "Applica filtri",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.deepPurple),
+        ),
+        onPressed: () {
+          widget.onApplyFilters(_filterBrand); // Richiama il callback
+        },
+      ),
       SizedBox(height: 20),
       Container(
-          width: MyConstant.wfmax-40,
-
-          decoration: BoxDecoration(
-            color: Color(0xD2E8E8F3),
-            borderRadius: BorderRadius.circular(MyConstant.bAm),
-          ),
-          padding: const EdgeInsets.all(20),
-          child:Column(children: [
-            Text("Brand",
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Color(0xFF5E2A9B))),
-            SizedBox(height: 10),
-    !_searching
-    ?_filterBrand!.length == 0
-    ? noResults()
-        :SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Wrap(
-                spacing: 8.0, // Spazio tra i chip
-                runSpacing: 8.0, // Spazio tra le righe dei chip
-                children: _filterBrand.keys.map((String key) {
-                  return ChoiceChip(
-                    elevation: 6,
-                    pressElevation: 8,
-                    label: Text(
-                      key,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10,
-                          color: Colors.deepPurple),
-                    ),
-                    selected: _filterBrand[key]!,
-                    backgroundColor: const Color(
-                        0x919191C5), // Colore sfondo non selezionato
-                    selectedColor: Colors.white, // Colore sfondo selezionato
-                    checkmarkColor: Colors.deepPurple,
-                    onSelected: (bool selected) {
-                      setState(() {
-                        _filterBrand[key] = selected as bool; // Aggiorna la mappa
-                      });
-                    },
-                  );
-                }).toList(),
-              ),
-            ): CircularProgressIndicator()
-          ]))
+        width: MyConstant.wfmax - 40,
+        decoration: BoxDecoration(
+          color: Color(0xD2E8E8F3),
+          borderRadius: BorderRadius.circular(MyConstant.bAm),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(children: [
+          Text("Brand",
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Color(0xFF5E2A9B))),
+          SizedBox(height: 10),
+          !_searching
+              ? _filterBrand.length == 0
+              ? noResults()
+              : SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              children: _filterBrand.keys.map((String key) {
+                return ChoiceChip(
+                  elevation: 6,
+                  pressElevation: 8,
+                  label: Text(
+                    key,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                        color: Colors.deepPurple),
+                  ),
+                  selected: _filterBrand[key]!,
+                  backgroundColor: const Color(0x919191C5),
+                  selectedColor: Colors.white,
+                  checkmarkColor: Colors.deepPurple,
+                  onSelected: (bool selected) {
+                    setState(() {
+                      _filterBrand[key] = selected;
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+          )
+              : CircularProgressIndicator(),
+        ]),
+      ),
+      SizedBox(height: 20),
     ]);
   }
+
   Widget noResults() {
     return Text("no_results !");
   }
 
   void _search() {
-    if (_searching == true) {
-      Model.sharedInstance
-          .getBrandCategory(
-          categoria)!
-          .then((brands) {
+    if (_searching) {
+      Model.sharedInstance.getBrandCategory(categoria)!.then((brands) {
         setState(() {
           _searching = false;
           _filterBrand.clear();
-          for (Brand b in brands){
+          for (Brand b in brands) {
             _filterBrand.putIfAbsent(b.name, () => false);
           }
         });
+      }).catchError((error) {
+        // Gestisci l'errore
+        setState(() {
+          _searching = false;
+        });
+        print("Errore durante la ricerca dei brand: $error");
       });
-
     }
   }
 }

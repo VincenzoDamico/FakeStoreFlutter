@@ -13,11 +13,12 @@ class MyDesktopBody extends StatefulWidget {
 class _MyDesktopBodyState extends State<MyDesktopBody> {
   @override
   Widget build(BuildContext context) {
+    var dim=MediaQuery.of(context).size.width * 0.35;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         endDrawer:SizedBox(
-            width: MediaQuery.of(context).size.width * 0.35,
+            width: dim> 450?dim:450  ,
             child:  Drawer_Cart()
       ),
         body: Column(
@@ -63,9 +64,10 @@ class _MyDesktopBodyState extends State<MyDesktopBody> {
               child: TabBarView(
                 children: [
 
-                  catScarpe("Mocassini"),
-                  catScarpe("Sneakers"),
-                  catScarpe("Stivali")
+                  CatScarpe(categoria: "Mocassini") ,
+                  CatScarpe(categoria: "Sneakers"),
+                  CatScarpe(categoria: "Stivali"),
+
                 ],
               ),
             ),

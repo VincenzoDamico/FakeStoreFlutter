@@ -217,6 +217,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store/Provider/ProductProvider.dart';
 import 'Homepage.dart';
 import 'Provider/CartProvider.dart';
 
@@ -233,6 +234,9 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
               create: (_) => CartProvider()
+          ),
+          ChangeNotifierProvider(
+              create: (_) => ProductProvider()
           )
         ],
         child: MaterialApp(
