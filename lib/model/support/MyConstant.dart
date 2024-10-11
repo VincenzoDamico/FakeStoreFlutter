@@ -31,13 +31,21 @@ class MyConstant {
   static final String MESSAGE_CONNECTION_ERROR = "connection_error";
   // addresses
   static final String ADDRESS_STORE_SERVER = "localhost:9090";
+  static final String ADDRESS_AUTHENTICATION_SERVER = "localhost:8080";
 
 // requests
   static final String REQUEST_ALL_PRODUCTS = "ApiProduct/productAll";
   static final String REQUEST_CATEGORY_PRODUCTS= "ApiProduct/productCategory";
   static final String REQUEST_CATEGORY_BRANDS= "/ApiBrand/brandCategory";
   static final String REQUEST_PRODUCTS_CATEGORY_BRANDS= "ApiProduct/productCategoryBrand";
+  static final String REQUEST_ADD_USER="ApiUsers";
 
+  // authentication
+  static final String REALM = "fake-store";
+  static final String CLIENT_ID = "api-store";
+  static final String CLIENT_SECRET = "EPIZUwiZGVsAYMiPx7omEIZLVP2sqTNe";
+  static final String REQUEST_LOGIN = "realms/" + REALM + "/protocol/openid-connect/token";
+  static final String REQUEST_LOGOUT = "/auth/realms/" + REALM + "/protocol/openid-connect/logout";
 
 
 }

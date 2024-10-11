@@ -20,7 +20,7 @@ import '../widget/FilterApp.dart';
 class CartScarpeD extends StatefulWidget {
   final String categoria;
 
-  CartScarpeD(this.categoria ) : super();
+  CartScarpeD(this.categoria) : super();
 
   @override
   _CartScarpeDState createState() => _CartScarpeDState(categoria);
@@ -32,16 +32,20 @@ class _CartScarpeDState extends State<CartScarpeD> {
   _CartScarpeDState(this.categoria);
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final provider = Provider.of<ProductProvider>(context, listen: true);
-    _search(provider); // Spostato qui per evitare di chiamare il metodo più volte
+  @override
+  void initState() {
+    super.initState();
+    final provider = Provider.of<ProductProvider>(context, listen: false);
+    _search(
+        provider); // Spostato qui per evitare di chiamare il metodo più volte
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider=ProductProvider.of(context);
+    final provider = ProductProvider.of(context);
     var screenSize = MediaQuery.of(context).size;
+    int num = (screenSize.width - MyConstant.wfmax) ~/ MyConstant.wmax;
+    int numItemGrid = num < 1 ? 1 : num;
     return Scaffold(
       backgroundColor: Colors.deepPurple[200],
       body: Padding(
@@ -59,7 +63,8 @@ class _CartScarpeDState extends State<CartScarpeD> {
                 ),
                 child: Filter(
                   categoria,
-                  onApplyFilters: (selectedBrands) => _applyFilters(selectedBrands, provider), // Correzione qui
+                  onApplyFilters: (selectedBrands) =>
+                      _applyFilters(selectedBrands, provider), // Correzione qui
                 ),
               ),
             ),
@@ -70,24 +75,29 @@ class _CartScarpeDState extends State<CartScarpeD> {
                   // GridView per visualizzare i prodotti
                   Expanded(
                     child: provider.search
-                        ? Center(child: CircularProgressIndicator()) // Indicatore di caricamento
+                        ? Center(
+                            child:
+                                CircularProgressIndicator()) // Indicatore di caricamento
                         : provider.product == null || provider.product!.isEmpty
-                        ? noResults() // Nessun risultato trovato
-                        : GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: provider.product!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(MyConstant.pmd),
-                          child: ProductCard(prod: provider.product![index]),
-                        );
-                      },
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: (screenSize.width - MyConstant.wfmax) ~/
-                            MyConstant.wmax ,
-                        childAspectRatio: MyConstant.wmax / MyConstant.hmax,
-                      ),
-                    ),
+                            ? noResults() // Nessun risultato trovato
+                            : GridView.builder(
+                                shrinkWrap: true,
+                                itemCount: provider.product!.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.all(MyConstant.pmd),
+                                    child: ProductCard(
+                                        prod: provider.product![index]),
+                                  );
+                                },
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: numItemGrid,
+                                  childAspectRatio:
+                                      MyConstant.wmax / MyConstant.hmax,
+                                ),
+                              ),
                   ),
                 ],
               ),
@@ -106,7 +116,7 @@ class _CartScarpeDState extends State<CartScarpeD> {
     if (provider.search) {
       Model.sharedInstance.getProductCategory(categoria)!.then((product) {
         setState(() {
-        provider.updateItem(lp: product);
+          provider.updateItem(lp: product);
         });
       }).catchError((error) {
         // Gestione dell'errore
@@ -118,7 +128,8 @@ class _CartScarpeDState extends State<CartScarpeD> {
     }
   }
 
-  void _applyFilters(Map<String, bool> selectedBrands, ProductProvider provider) {
+  void _applyFilters(
+      Map<String, bool> selectedBrands, ProductProvider provider) {
     List<String> selectBrands = [];
     for (String key in selectedBrands.keys) {
       if (selectedBrands[key]!) {

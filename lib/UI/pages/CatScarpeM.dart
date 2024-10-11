@@ -31,9 +31,9 @@ class _CartScarpeMState extends State<CartScarpeM> {
   _CartScarpeMState(this.categoria);
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final provider = Provider.of<ProductProvider>(context, listen: true);
+  void initState() {
+    super.initState();
+    final provider = Provider.of<ProductProvider>(context, listen: false);
 
     _search(provider); // Spostato qui per evitare di chiamare il metodo più volte
   }

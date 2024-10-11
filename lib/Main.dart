@@ -217,11 +217,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store/Provider/ProductProvider.dart';
 import 'Homepage.dart';
 import 'Provider/CartProvider.dart';
+import 'model/SharedPreferenceManager.dart';
 
-void main() {
+//Future<void> main() async{
+ // await SharedPreferenceManager.init();
+ void main(){
   runApp(const MyApp());
 }
 

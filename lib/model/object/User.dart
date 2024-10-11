@@ -39,8 +39,6 @@ class User {
 
   @override
   String toString() {
-    return name + " " + surname;
+    return 'User{id: $id, name: $name, surname: $surname, email: $email, phone: $phone, address: $address, city: $city, cap: $cap}';
   }
-
-
 }

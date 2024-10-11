@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:store/UI/pages/CatScarpe.dart';
+import 'package:store/UI/pages/LoginPage.dart';
+import 'package:store/model/SharedPreferenceManager.dart';
 
 import 'Drawer_cart.dart';
 
@@ -31,7 +33,11 @@ class _MyDesktopBodyState extends State<MyDesktopBody> {
                 IconButton(
                   icon: const Icon(Icons.person),
                   onPressed: () {
-
+                      //SharedPreferenceManager.instance.containsKey("id") ?
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Loginpage()),
+                      );
                   },
                 ),
                 Builder(

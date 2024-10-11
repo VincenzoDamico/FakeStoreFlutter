@@ -29,18 +29,12 @@ class CatScarpe extends StatefulWidget {
 }
 
 class _CatScarpeState extends State<CatScarpe> {
-  bool _isInitialized = false; // Traccia se è già stato eseguito clear()
 
   @override
   void initState() {
     super.initState();
-    // Chiamiamo clear durante initState, che è il momento giusto per aggiornare lo stato
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!_isInitialized) {
-        Provider.of<ProductProvider>(context, listen: false).clear();
-        _isInitialized = true;
-      }
-    });
+   Provider.of<ProductProvider>(context, listen: false).clear();
+     // Spostato qui per evitare di chiamare il metodo più volte
   }
 
   @override
