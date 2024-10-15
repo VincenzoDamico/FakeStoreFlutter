@@ -137,6 +137,7 @@ class _CartScarpeMState extends State<CartScarpeM> {
                                               children: [
                                                 IconButton(
                                                     onPressed: () {
+                                                      if(cartItems.stock_quantity!=0){
                                                       context
                                                           .read<CartProvider>()
                                                           .addItem(
@@ -149,6 +150,26 @@ class _CartScarpeMState extends State<CartScarpeM> {
                                                       FocusManager
                                                           .instance.primaryFocus
                                                           ?.unfocus();
+                                                      }else{
+                                                        showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext context) {
+                                                          return AlertDialog(
+                                                            title: Text('Il prodotto è al momento fuori stock'),
+                                                            content: Text(
+                                                                'Riprova fra un po'),
+                                                            actions: [
+                                                              TextButton(
+                                                                onPressed: () {
+                                                                  Navigator.pop(context);
+                                                                },
+                                                                child: Text('OK'),
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
+                                                        );
+                                                      }
                                                     },
                                                     icon: const Icon(Icons.add))
                                               ],
@@ -175,7 +196,7 @@ class _CartScarpeMState extends State<CartScarpeM> {
     if (provider.search) {
       Model.sharedInstance.getProductCategory(categoria)!.then((product) {
         setState(() {
-          provider.updateItem(lp: product);
+          provider.updateItem(lp: product!);
         });
       }).catchError((error) {
         // Gestione dell'errore
@@ -199,7 +220,7 @@ class _CartScarpeMState extends State<CartScarpeM> {
       // Nessun brand selezionato, mostra tutti i prodotti della categoria
       Model.sharedInstance.getProductCategory(categoria)!.then((product) {
         setState(() {
-          provider.updateItem(lp: product);
+          provider.updateItem(lp: product!);
         });
       }).catchError((error) {
         // Gestisci l'errore

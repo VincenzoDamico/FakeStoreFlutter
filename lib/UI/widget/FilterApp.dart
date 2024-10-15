@@ -109,7 +109,7 @@ class _FilterState extends State<Filter> {
         setState(() {
           _searching = false;
           _filterBrand.clear();
-          for (Brand b in brands) {
+          for (Brand b in brands!) {
             _filterBrand.putIfAbsent(b.name, () => false);
           }
         });

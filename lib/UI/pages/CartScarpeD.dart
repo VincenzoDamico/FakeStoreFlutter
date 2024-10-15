@@ -140,7 +140,7 @@ class _CartScarpeDState extends State<CartScarpeD> {
       // Nessun brand selezionato, mostra tutti i prodotti della categoria
       Model.sharedInstance.getProductCategory(categoria)!.then((product) {
         setState(() {
-          provider.updateItem(lp: product);
+          provider.updateItem(lp: product!);
         });
       }).catchError((error) {
         // Gestisci l'errore

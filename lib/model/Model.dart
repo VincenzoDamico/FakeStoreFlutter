@@ -107,7 +107,6 @@ class Model {
       List<dynamic> ObjsJson= jsonDecode(await _restManager.makeGetRequest(
           MyConstant.ADDRESS_STORE_SERVER,
           MyConstant.REQUEST_ALL_PRODUCTS)) as List;
-      print(ObjsJson);
       List<Product> pObjs = ObjsJson.map((pObjs) => Product.fromJson(pObjs)).toList();
       if (pObjs==null){
         print("errorooror");
@@ -115,7 +114,7 @@ class Model {
       return pObjs;
 
   }
-  Future<List<Product>> getProductCategory(String c) async {
+  Future<List<Product>?> getProductCategory(String c) async {
     print(" \n richiestaProdCat \n");
 
     Map<String, String> params = Map();
@@ -123,25 +122,20 @@ class Model {
     List<dynamic> ObjsJson= jsonDecode(await _restManager.makeGetRequest(
         MyConstant.ADDRESS_STORE_SERVER,
         MyConstant.REQUEST_CATEGORY_PRODUCTS,params)) as List;
-    print(ObjsJson);
-    List<Product> pObjs = ObjsJson.map((data) => Product.fromJson(data)).toList();
-
-    if (pObjs==null){
-      print("errorooror");
+    if (ObjsJson.isEmpty){
+      return null;
     }
+    List<Product> pObjs = ObjsJson.map((data) => Product.fromJson(data)).toList();
     return pObjs;
 
   }
   Future<List<Product>> getProductBrandCategory(String c, List<String> brands) async {
-    print("\n richiestaProdCatBrand \n");
-
     Map<String, String> params = Map();
     params["catname"] = c;
     params["brands"] = brands.toString().replaceAll("[", "").replaceAll("]", "");;
     List<dynamic> ObjsJson= jsonDecode(await _restManager.makeGetRequest(
         MyConstant.ADDRESS_STORE_SERVER,
         MyConstant.REQUEST_PRODUCTS_CATEGORY_BRANDS,params)) as List;
-    print(ObjsJson);
     List<Product> bObjs = ObjsJson.map((data) => Product.fromJson(data)).toList();
 
     if (bObjs==null){
@@ -153,20 +147,18 @@ class Model {
 
 
 
-  Future<List<Brand>> getBrandCategory(String c) async {
-    print(" \n richiestaBrandCat \n");
-
+  Future<List<Brand>?>? getBrandCategory(String c) async {
     Map<String, String> params = Map();
     params["category"] = c;
     List<dynamic> ObjsJson= jsonDecode(await _restManager.makeGetRequest(
         MyConstant.ADDRESS_STORE_SERVER,
         MyConstant.REQUEST_CATEGORY_BRANDS,params)) as List;
-    print(ObjsJson);
+    if (ObjsJson.isEmpty){
+      return null;
+    }
     List<Brand> bObjs = ObjsJson.map((data) => Brand.fromJson(data)).toList();
 
-    if (bObjs==null){
-      print("errorooror \n");
-    }
+
     return bObjs;
   }
 

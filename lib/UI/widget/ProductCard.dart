@@ -76,10 +76,30 @@ class ProductCard extends StatelessWidget {
                         ), Spacer(),
                         ElevatedButton(
                             onPressed: () {
+                              if(prod.stock_quantity!=0){
                               context.read<CartProvider>().addItem(
                                   newItem: new Order_item(
                                       product: prod, quantity: 1));
-                              FocusManager.instance.primaryFocus?.unfocus();
+                              FocusManager.instance.primaryFocus?.unfocus();}else{
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Il prodotto è al momento fuori stock'),
+                                      content: Text(
+                                          'Riprova fra un po'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
                             },
                             child: const Text("Compra")),
                       ])
