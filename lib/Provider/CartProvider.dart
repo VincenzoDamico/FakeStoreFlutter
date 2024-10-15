@@ -15,7 +15,7 @@ class CartProvider extends ChangeNotifier{
     if (_orderItems.contains(newItem)) {
       // Se l'elemento esiste, incrementa la quantità
       var existingItem = _orderItems.firstWhere(
-            (item) => item.prodotto == newItem.prodotto,
+            (item) => item.product == newItem.product,
       );
       existingItem.addQuantity();  // Assicurati che `addQuantity` sia definito in Order_item
     } else {
@@ -38,12 +38,16 @@ class CartProvider extends ChangeNotifier{
     _orderItems.clear();
     notifyListeners();
   }
+  int getQuantItem({ required Order_item item}) {
+    return item.quantity;
+  }// Notifica ai consumatori che lo stato è cambiato
+
 
   // Metodo per ottenere il totale del carrello
   Future<double> getTotalPrice() async {
     double total = 0.0;
     for (var item in _orderItems) {
-      total += item.prodotto.price*item.quantity;
+      total += item.product.price*item.quantity;
     }
     return total;
   }

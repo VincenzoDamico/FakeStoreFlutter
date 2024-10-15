@@ -1,18 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:store/model/object/Brand.dart';
+import 'package:store/model/object/Order_bucket.dart';
 import 'package:store/model/support/AuthenticationData.dart';
 import 'package:store/model/support/LogInResult.dart';
 import 'package:store/model/support/MyConstant.dart';
 import 'package:store/model/support/UserRegistrationRequest.dart';
-
 import 'menager/RestManager.dart';
+import 'object/Order_item.dart';
 import 'object/Product.dart';
-import 'object/Categoria.dart';
-
-import 'object/ProvaProd.dart';
 import 'object/User.dart';
 
 
@@ -50,12 +47,12 @@ class Model {
       Timer.periodic(Duration(seconds: (_authenticationData!.expiresIn - 50)), (Timer t) {
         _refreshToken();
       });
-
       return LogInResult.logged;
     }
     catch (e) {
       return LogInResult.error_unknown;
     }
+
   }
 
   Future<bool> _refreshToken() async {
@@ -71,7 +68,6 @@ class Model {
         return false;
       }
       _restManager.token = _authenticationData!.accessToken;
-
       return true;
     }
     catch (e) {
@@ -93,11 +89,21 @@ class Model {
       return false;
     }
   }
+  Future<bool> purchase(List<Order_item> li) async {
+    if (_restManager.token!=null) {
+      Map<String, String> params = Map();
+      params["Authorization"]="Bearer "+_restManager.token!;
+      String result = await _restManager.makePostRequestAuthorization(MyConstant.ADDRESS_STORE_SERVER, MyConstant.REQUEST_PURCHASE, params, li);
+      print(result);
+      return result=="CART_UPDATED";
+    }
+    return false;
+  }
 
 
 
 
-  Future<List<Product>> getAllProduct() async {
+    Future<List<Product>> getAllProduct() async {
       List<dynamic> ObjsJson= jsonDecode(await _restManager.makeGetRequest(
           MyConstant.ADDRESS_STORE_SERVER,
           MyConstant.REQUEST_ALL_PRODUCTS)) as List;

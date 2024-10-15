@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:store/model/object/Order_item.dart';
+import 'package:store/model/object/Product.dart';
 import 'package:store/model/support/ErrorListener.dart';
 import 'package:store/model/support/MyConstant.dart';
 
@@ -85,6 +87,12 @@ class RestManager {
   Future<String> makePostRequest(String serverAddress, String servicePath, dynamic value, {TypeHeader type = TypeHeader.json}) async {
 
     return _makeRequest(serverAddress, servicePath, "post", type, body: value);
+  }
+
+  Future<String> makePostRequestAuthorization(String serverAddress, String servicePath, Map<String, String> value,  dynamic body,{TypeHeader type = TypeHeader.json}) async {
+    dynamic formattedBody = json.encode(body);
+    print(formattedBody);
+    return _makeRequest(serverAddress, servicePath, "post", type, value:  value, body: body);
   }
 
   Future<String> makeGetRequest(String serverAddress, String servicePath, [Map<String, String>? value, TypeHeader type = TypeHeader.json]) async {

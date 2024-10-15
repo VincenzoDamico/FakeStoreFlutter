@@ -7,14 +7,14 @@ class Order_item {
 
   int order_item_id;
   int quantity = 0;
-  Product prodotto;
-  Order_bucket? order_bucket;
+  Product product;
+  //Order_bucket? order_bucket;
 
   // Costruttore
   Order_item({
     required this.quantity,
-    required this.prodotto,
-    this.order_bucket,
+    required this.product,
+   // this.order_bucket,
   }) : order_item_id = _generateId();  // Genera un nuovo ID automaticamente
 
   @override
@@ -22,7 +22,7 @@ class Order_item {
       identical(this, other) ||
           other is Order_item &&
               runtimeType == other.runtimeType &&
-              prodotto == other.prodotto;
+              product == other.product;
 
   // Genera un nuovo ID incrementale
   static int _generateId() {
@@ -34,8 +34,8 @@ class Order_item {
   factory Order_item.fromJson(Map<String, dynamic> json) {
     return Order_item(
       quantity: json['quantity'],
-      prodotto: Product.fromJson(json['prodotto']),
-      order_bucket: Order_bucket.fromJson(json['order_bucket']),
+      product: Product.fromJson(json['product']),
+   //   order_bucket: Order_bucket.fromJson(json['order_bucket']),
     );
   }
 
@@ -43,13 +43,13 @@ class Order_item {
   Map<String, dynamic> toJson() => {
     'order_item_id': order_item_id,
     'quantity': quantity,
-    'prodotto': prodotto.toJson(),
-    'order_bucket': order_bucket?.toJson(),
+    'product': product.toJson(),
+   // 'order_bucket': order_bucket?.toJson(),
   };
 
   // Aumenta la quantità, verificando che non superi lo stock
   void addQuantity() {
-    if (prodotto.stock_quantity > quantity) {
+    if (product.stock_quantity > quantity) {
       quantity++;
     }
   }

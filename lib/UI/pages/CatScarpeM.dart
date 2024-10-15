@@ -6,14 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Provider/CartProvider.dart';
 import '../../Provider/ProductProvider.dart';
-import '../../model/object/Brand.dart';
-import '../../model/object/Categoria.dart';
 
 import '../../model/Model.dart';
 import '../../model/object/Order_item.dart';
-import '../../model/object/Product.dart';
 import '../../model/support/Images.dart';
-import '../widget/ProductCard.dart';
 import '../../model/support/MyConstant.dart';
 import '../widget/FilterApp.dart';
 
@@ -33,9 +29,10 @@ class _CartScarpeMState extends State<CartScarpeM> {
   @override
   void initState() {
     super.initState();
-    final provider = Provider.of<ProductProvider>(context, listen: false);
-
-    _search(provider); // Spostato qui per evitare di chiamare il metodo più volte
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
+      final provider = Provider.of<ProductProvider>(context, listen: false);
+      _search(provider);});
+     // Spostato qui per evitare di chiamare il metodo più volte
   }
 
   @override
@@ -97,7 +94,7 @@ class _CartScarpeMState extends State<CartScarpeM> {
                                               child: FittedBox(
                                                 fit: BoxFit.contain,
                                                 child: Image.asset(Images.myMap[
-                                                    cartItems.imagePath]!),
+                                                    cartItems.image_path]!),
                                               )),
                                           const SizedBox(width: 20),
                                           Column(
@@ -145,7 +142,7 @@ class _CartScarpeMState extends State<CartScarpeM> {
                                                           .addItem(
                                                               newItem:
                                                                   new Order_item(
-                                                                      prodotto:
+                                                                      product:
                                                                           cartItems,
                                                                       quantity:
                                                                           1));

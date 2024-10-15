@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store/UI/pages/RegPage.dart';
 
+import '../../Provider/LogProvider.dart';
 import '../../model/Model.dart';
 import '../../model/SharedPreferenceManager.dart';
 import '../../model/support/LogInResult.dart';
@@ -88,6 +89,7 @@ class _LoginState extends State<Loginpage> {
 
   @override
   Widget build(BuildContext context) {
+    final logprovider = LogProvider.of(context, listen: false);
     final mediaQuery = MediaQuery.of(context);
     bool isMobile = mediaQuery.size.width < 800;
     final TextEditingController emailController = TextEditingController();
@@ -289,6 +291,7 @@ class _LoginState extends State<Loginpage> {
                                             passwordController.text);
                                     print(result);
                                     if (result == LogInResult.logged) {
+                                      logprovider.LogIn();
                                       Navigator.pop(context);
                                     } else if (result ==
                                         LogInResult.error_wrong_credentials) {

@@ -32,8 +32,9 @@ class _CatScarpeState extends State<CatScarpe> {
 
   @override
   void initState() {
-    super.initState();
-   Provider.of<ProductProvider>(context, listen: false).clear();
+    super.initState();    WidgetsBinding.instance.addPostFrameCallback((_)async{     Provider.of<ProductProvider>(context, listen: false).clear();
+    });
+
      // Spostato qui per evitare di chiamare il metodo più volte
   }
 

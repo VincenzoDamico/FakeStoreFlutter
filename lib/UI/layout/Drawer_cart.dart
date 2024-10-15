@@ -1,17 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store/Provider/CartProvider.dart';
+import 'package:store/Provider/LogProvider.dart';
+import 'package:store/model/Model.dart';
+import 'package:store/model/object/Order_item.dart';
 
 import '../../model/support/Images.dart';
+import '../pages/LoginPage.dart';
 
-class Drawer_Cart extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:store/Provider/CartProvider.dart';
+import 'package:store/Provider/LogProvider.dart';
+import 'package:store/model/Model.dart';
+import '../../model/support/Images.dart';
+import '../pages/LoginPage.dart';
+
+class DrawerCart extends StatefulWidget {
+  @override
+  _DrawerCartState createState() => _DrawerCartState();
+}
+
+class _DrawerCartState extends State<DrawerCart> {
   @override
   Widget build(BuildContext context) {
-    final provider = CartProvider.of(context);
+    final provider = CartProvider.of(context, listen: false);
     final finalList = provider.orderItems;
+    LogProvider logProvider = LogProvider.of(context);
+
     return Drawer(
-        backgroundColor: Color(0xFAD3D3D7),
-        child: ListView(padding: EdgeInsets.zero, children: <Widget>[
+      backgroundColor: Color(0xFAD3D3D7),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.deepPurpleAccent,
@@ -23,15 +44,49 @@ class Drawer_Cart extends StatelessWidget {
                   children: [
                     ElevatedButton(
                         child: const Text(
-                          "Pagemento",
+                          "Pagamento",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                               color: Colors.deepPurple),
                         ),
-                        onPressed: () {}),
+                        onPressed: () async {
+                          if (!logProvider.log) {
+                            await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text('Impossibile Pagamento'),
+                                  content: Text(
+                                      'Impossibile effettuare il pagamento, devi fare prima il log in'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Loginpage()));
+                          } else {
+                            if (!finalList.isEmpty) {
+                              bool purchase = await Model.sharedInstance
+                                  .purchase(finalList);
+                              print(purchase.toString());
+                              if (purchase) {
+                                print("c'è l'hai fatta");
+                                setState(()=> provider.clear());
+                              }
+                            }
+                          }
+                        }),
                     Spacer(),
-
                     FutureBuilder<double>(
                       future: provider.getTotalPrice(),
                       builder: (context, snapshot) {
@@ -56,104 +111,115 @@ class Drawer_Cart extends StatelessWidget {
               ],
             ),
           ),
+
           ListView.builder(
             shrinkWrap: true,
             itemCount: finalList.length,
             itemBuilder: (context, index) {
               final cartItems = finalList[index];
-
-              return Stack(children: [
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      children: [
-                        Container(
-                            height: 150,
-                            width: 90,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                            ),
-                            // padding: const EdgeInsets.all(20),
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: Image.asset(
-                                  Images.myMap[cartItems.prodotto.imagePath]!),
-                            )),
-                        const SizedBox(width: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              cartItems.prodotto.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+              return Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          Container(
+                              height: 150,
+                              width: 90,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              cartItems.prodotto.category.name,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  color: Colors.grey.shade400),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              "\$${cartItems.prodotto.price}",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Spacer(),
-                        Expanded(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                              FloatingActionButton(
-                                  child: const Icon(Icons.add),
-                                  onPressed: () {
-                                    context
-                                        .read<CartProvider>()
-                                        .addItem(newItem: cartItems);
-                                  }),
-                              const SizedBox(height: 10),
+                              child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Image.asset(Images
+                                    .myMap[cartItems.product.image_path]!),
+                              )),
+                          const SizedBox(width: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Text(
-                                "${cartItems.quantity}",
+                                cartItems.product.name,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                                  fontSize: 16,
                                 ),
                               ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                cartItems.product.category.name,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    color: Colors.grey.shade400),
+                              ),
                               const SizedBox(height: 10),
-                              FloatingActionButton(
-                                  child: const Icon(Icons.remove),
-                                  onPressed: () {
-                                    context
-                                        .read<CartProvider>()
-                                        .removeItem(item: cartItems);
-                                  }),
-                            ]))
-                      ],
+                              Text(
+                                "\$${cartItems.product.price}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Spacer(),
+                          Expanded(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                FloatingActionButton(
+                                    child: const Icon(Icons.add),
+                                    onPressed: () {
+                                      setState(() {
+                                        context
+                                            .read<CartProvider>()
+                                            .addItem(newItem: cartItems);
+                                      });
+                                    }),
+                                const SizedBox(height: 10),
+                                Consumer<CartProvider>(
+                                  builder: (context, cartProvider, child) {
+                                    return Text(
+                                      "${cartProvider.getQuantItem(item: cartItems)}",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 10),
+                                FloatingActionButton(
+                                    child: const Icon(Icons.remove),
+                                    onPressed: () {
+                                      setState(() {
+                                        context
+                                            .read<CartProvider>()
+                                            .removeItem(item: cartItems);
+                                      });
+                                    }),
+                              ]))
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ]);
+                ],
+              );
             },
           ),
-        ]));
+        ],
+      ),
+    );
   }
 }

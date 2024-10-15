@@ -78,7 +78,7 @@ class ProductCard extends StatelessWidget {
                             onPressed: () {
                               context.read<CartProvider>().addItem(
                                   newItem: new Order_item(
-                                      prodotto: prod, quantity: 1));
+                                      product: prod, quantity: 1));
                               FocusManager.instance.primaryFocus?.unfocus();
                             },
                             child: const Text("Compra")),

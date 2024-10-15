@@ -32,12 +32,11 @@ class _CartScarpeDState extends State<CartScarpeD> {
   _CartScarpeDState(this.categoria);
 
   @override
-  @override
   void initState() {
     super.initState();
-    final provider = Provider.of<ProductProvider>(context, listen: false);
-    _search(
-        provider); // Spostato qui per evitare di chiamare il metodo più volte
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
+      final provider = Provider.of<ProductProvider>(context, listen: false);
+      _search(provider);}); // Spostato qui per evitare di chiamare il metodo più volte
   }
 
   @override

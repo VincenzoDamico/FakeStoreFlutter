@@ -8,13 +8,12 @@ class Product {
   int size;
   String color;
   String description;
-  String imagePath;
+  String image_path;
   int stock_quantity;
 
   double price;
   Categoria category;
   Brand brand;
-  List<Order_item> listOrder;
 
   Product(
      { this.id,
@@ -22,12 +21,12 @@ class Product {
       required this.size,
       required this.color,
       required this.description,
-       required this.imagePath,
+       required this.image_path,
       required this.stock_quantity,
       required this.price,
       required this.category,
         required this.brand,
-        required this.listOrder});
+   });
 
   @override
   bool operator ==(Object other) =>
@@ -46,14 +45,12 @@ class Product {
       size: json['size'] as int,
       color: json['color'] as String,
       description: json['description'] as String,
-      imagePath: json['imagePath'] as String,
+      image_path: json['image_path'] as String,
       stock_quantity: json['stock_quantity'] as int,
         price: (json['price'] as num).toDouble(),
       category: Categoria.fromJson(json['category']),
       brand:  Brand.fromJson(json['brand']),
-      listOrder: (json['listOrder'] as List)
-        .map((item) => Order_item.fromJson(item))
-        .toList(),
+
     );
   }
 
@@ -63,12 +60,11 @@ class Product {
         'size': size,
         'color': color,
         'description': description,
-         'image_path': imagePath,
+         'image_path': image_path,
         'stock_quantity': stock_quantity,
         'price': price,
         'category': category.toJson(),
         'brand': brand.toJson(),
-        'listOrder': listOrder.map((item) => item.toJson()).toList(),
       };
 
   @override
@@ -81,7 +77,7 @@ class Product {
   }
 
   String getImagePath() {
-    return imagePath;
+    return image_path;
   }
 
   String getColor() {

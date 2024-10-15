@@ -221,11 +221,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:store/Provider/ProductProvider.dart';
 import 'Homepage.dart';
 import 'Provider/CartProvider.dart';
+import 'Provider/LogProvider.dart';
 import 'model/SharedPreferenceManager.dart';
 
-//Future<void> main() async{
- // await SharedPreferenceManager.init();
- void main(){
+Future<void> main() async{
+ await SharedPreferenceManager.init();
   runApp(const MyApp());
 }
 
@@ -241,6 +241,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
               create: (_) => ProductProvider()
+          ),
+          ChangeNotifierProvider(
+              create: (_) => LogProvider()
           )
         ],
         child: MaterialApp(

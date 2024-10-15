@@ -202,31 +202,13 @@ class _RegState extends State<Regpage> {
                                     cityController.text.isEmpty ||
                                     capController.text.isEmpty ||
                                     passwordController.text.isEmpty) {
-                                  WidgetsBinding.instance
-                                      .addPostFrameCallback((_) {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Errore'),
-                                          content: const Text(
-                                              'Compila tutti i campi per effettuare la registrazione.'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  });
+                                  _mess('Compila tutti i campi per effettuare la registrazione.');
+                                }if(_campiERR(phoneController.text,emailController.text,capController.text)){
+                                  _mess("Errore nell'inserimento dell'email, del telofono o del cap");
                                 }else{
-                                  User? s=await Model.sharedInstance.addUser(new User(name: nameController.text, surname: surnameController.text, email: emailController.text, phone: phoneController.text, address: addressController.text, city: cityController.text, cap: capController.text), passwordController.text);
-                                  if (User != null){
-                                   // Navigator.pop(context);
+                                  User? s=await Model.sharedInstance.addUser(new User(name: nameController.text.trim(), surname: surnameController.text.trim(), email: emailController.text.trim(), phone: phoneController.text.trim(), address: addressController.text.trim(), city: cityController.text.trim(), cap: capController.text.trim()), passwordController.text);
+                                  if (s != null){
+                                    Navigator.pop(context);
                                   }
                                 }
                               },
@@ -271,4 +253,41 @@ class _RegState extends State<Regpage> {
       ),
     );
   }
+
+  bool _campiERR(String p, String m, String c) {
+    const regexEmail = r"^[-A-Za-z0-9._%&$+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$";
+    const regexCell = r"^([\+][0-9][0-9])?[0-9][0-9][0-9][-\s\.]?[0-9][-\s\.]?[0-9][0-9][-\s\.]?[0-9][-\s\.]?[0-9][0-9][0-9]$";
+    const regexCap = r"^\d{5}$";
+      RegExp cellRegex = RegExp(regexCell);
+      RegExp emailRegex = RegExp(regexEmail);
+      RegExp capRegex = RegExp(regexCap);
+
+      return !cellRegex.hasMatch(p.trim()) &&
+          !emailRegex.hasMatch(m.trim()) &&
+        !capRegex.hasMatch(c.trim());
+    }
+
+  void _mess(String mess) {
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Errore'),
+            content: Text(mess),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    });
+  }
 }
+
