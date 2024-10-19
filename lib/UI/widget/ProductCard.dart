@@ -40,7 +40,7 @@ class ProductCard extends StatelessWidget {
                       border: Border.all(color: Colors.white),
                     ),
                     child: Image.asset(
-                      Images.myMap[prod.getImagePath()] ?? 'assets/images/default_image.png',
+                      Images.myMap[prod.getImagePath()] ?? 'assets/images/defaultImage.png',
                       fit: BoxFit.contain, // Adatta l'immagine al contenitore
                     ),
                   );

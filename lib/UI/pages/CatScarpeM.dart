@@ -94,7 +94,7 @@ class _CartScarpeMState extends State<CartScarpeM> {
                                               child: FittedBox(
                                                 fit: BoxFit.contain,
                                                 child: Image.asset(Images.myMap[
-                                                    cartItems.image_path]!),
+                                                    cartItems.image_path]?? 'assets/images/defaultImage.png'),
                                               )),
                                           const SizedBox(width: 20),
                                           Column(
@@ -137,7 +137,7 @@ class _CartScarpeMState extends State<CartScarpeM> {
                                               children: [
                                                 IconButton(
                                                     onPressed: () {
-                                                      if(cartItems.stock_quantity!=0){
+                                                      if(cartItems.stock_quantity>0){
                                                       context
                                                           .read<CartProvider>()
                                                           .addItem(
