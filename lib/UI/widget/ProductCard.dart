@@ -80,7 +80,25 @@ class ProductCard extends StatelessWidget {
                               context.read<CartProvider>().addItem(
                                   newItem: new Order_item(
                                       product: prod, quantity: 1));
-                              FocusManager.instance.primaryFocus?.unfocus();}else{
+                              FocusManager.instance.primaryFocus?.unfocus();
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Carello aggiornato'),
+                                    content: Text(
+                                        'Inserimento effetuato con successo'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );}else{
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {

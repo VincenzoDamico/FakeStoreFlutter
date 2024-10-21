@@ -121,7 +121,7 @@ class _DrawerCartState extends State<DrawerCart> {
                                       return AlertDialog(
                                         title: Text('c\'è l\'hai fatta'),
                                         content: Text(
-                                            ''),
+                                            'Ordine effetuato con successo'),
                                         actions: [
                                           TextButton(
                                             onPressed: () {

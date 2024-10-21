@@ -150,6 +150,24 @@ class _CartScarpeMState extends State<CartScarpeM> {
                                                       FocusManager
                                                           .instance.primaryFocus
                                                           ?.unfocus();
+                                                      showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) {
+                                                        return AlertDialog(
+                                                          title: Text('Carello aggiornato'),
+                                                          content: Text(
+                                                              'Inserimento effetuato con successo'),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(context);
+                                                              },
+                                                              child: Text('OK'),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                      );
                                                       }else{
                                                         showDialog(
                                                         context: context,
