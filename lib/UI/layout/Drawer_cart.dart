@@ -114,8 +114,25 @@ class _DrawerCartState extends State<DrawerCart> {
                                     .purchase(finalList);
                                 print(purchase.toString());
                                 if (purchase) {
-                                  print("c'è l'hai fatta");
                                   setState(() => provider.clear());
+                                  await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('c\'è l\'hai fatta'),
+                                        content: Text(
+                                            ''),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 }
                               }
                             }
