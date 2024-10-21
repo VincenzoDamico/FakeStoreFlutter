@@ -76,12 +76,47 @@ class _DrawerCartState extends State<DrawerCart> {
                                     builder: (context) => Loginpage()));
                           } else {
                             if (!finalList.isEmpty) {
-                              bool purchase = await Model.sharedInstance
-                                  .purchase(finalList);
-                              print(purchase.toString());
-                              if (purchase) {
-                                print("c'è l'hai fatta");
-                                setState(()=> provider.clear());
+                              bool aq = true;
+                              await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Conferma l\'acquisto'),
+                                    content: Text('Sei sicuro?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text('Si',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                                color: Colors.green)),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          aq = false;
+                                        },
+                                        child: Text('No',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                                color: Colors.red)),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                              if (aq) {
+                                bool purchase = await Model.sharedInstance
+                                    .purchase(finalList);
+                                print(purchase.toString());
+                                if (purchase) {
+                                  print("c'è l'hai fatta");
+                                  setState(() => provider.clear());
+                                }
                               }
                             }
                           }
@@ -111,7 +146,6 @@ class _DrawerCartState extends State<DrawerCart> {
               ],
             ),
           ),
-
           ListView.builder(
             shrinkWrap: true,
             itemCount: finalList.length,
@@ -140,7 +174,8 @@ class _DrawerCartState extends State<DrawerCart> {
                               child: FittedBox(
                                 fit: BoxFit.contain,
                                 child: Image.asset(Images
-                                    .myMap[cartItems.product.image_path]!),
+                                        .myMap[cartItems.product.image_path] ??
+                                    'assets/images/defaultImage.png'),
                               )),
                           const SizedBox(width: 20),
                           Column(

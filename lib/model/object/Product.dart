@@ -69,7 +69,7 @@ class Product {
 
   @override
   String toString() {
-    return name;
+    return name+" "+size.toString()+" "+color;
   }
 
   String getDescription() {

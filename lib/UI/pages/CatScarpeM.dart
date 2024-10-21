@@ -94,7 +94,7 @@ class _CartScarpeMState extends State<CartScarpeM> {
                                               child: FittedBox(
                                                 fit: BoxFit.contain,
                                                 child: Image.asset(Images.myMap[
-                                                    cartItems.image_path]?? 'assets/images/defaultImage.png'),
+                                                    cartItems.image_path]??'assets/images/defaultImage.png'),
                                               )),
                                           const SizedBox(width: 20),
                                           Column(

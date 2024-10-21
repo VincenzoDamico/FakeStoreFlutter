@@ -9,6 +9,7 @@ class Images{
     'MAPC.webp':'assets/images/MAPC.webp',
     'DNKM.webp':'assets/images/DNKM.webp',
     'BCV1.webp':'assets/images/BCV1.webp',
-    'ACB.webp':'assets/images/ACB.webp'
+    'ACB.webp':'assets/images/ACB.webp',
+    'default':'assets/images/defaultImage.png'
   };
 }
